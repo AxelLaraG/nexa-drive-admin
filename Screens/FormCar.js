@@ -76,6 +76,7 @@ export default function FormCar({ navigation }) {
 
     if (!brand || !model || !date || !image) {
       setError("Por favor completa todos los campos");
+      setLoading(false);
       return;
     }
 
@@ -107,7 +108,7 @@ export default function FormCar({ navigation }) {
       const docRef = await addDoc(vehiclesCollectionRef, {
         id: newId,
         brand: brand,
-        create_date: date.toISOString(),
+        create_date: date.toISOString().split("T")[0], // Solo la fecha en formato YYYY-MM-DD
         model: model,
         pic_url: picUrl,
         status: status,
@@ -129,6 +130,7 @@ export default function FormCar({ navigation }) {
     } catch (error) {
       console.error("Error al enviar el formulario:", error);
       Alert.alert("Error", "Hubo un problema al enviar los datos.");
+      setLoading(false);
     }
   };
 

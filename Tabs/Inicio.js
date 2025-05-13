@@ -33,10 +33,12 @@ export default function Inicio({ navigation }) {
     try {
       const db = getFirestore();
       const querySnapshot = await getDocs(collection(db, "vehicles"));
-      const vehicles = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+      const vehicles = querySnapshot.docs
+        .map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }))
+        .sort((a, b) => a.id - b.id); // Ordenar por ID de menor a mayor
       setData(vehicles);
     } catch (error) {
       console.error("Error al obtener los datos:", error); // Agrega manejo de errores
@@ -129,7 +131,7 @@ export default function Inicio({ navigation }) {
                   <Image
                     source={{ uri: item.pic_url }}
                     style={styles.cardImage}
-                    resizeMode="cover"
+                    resizeMode="contain"
                   />
                   <Text style={styles.cardText}>ID: {item.id}</Text>
                   <Text style={styles.cardText}>Marca: {item.brand}</Text>

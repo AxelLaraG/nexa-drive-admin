@@ -2,6 +2,7 @@
   "expo": {
     "name": "rentacar-admin",
     "slug": "rentacar-admin",
+    "schema": "myappredirect",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
