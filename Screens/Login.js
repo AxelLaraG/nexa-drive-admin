@@ -4,6 +4,7 @@ import {
   TouchableOpacity,
   View,
   ScrollView,
+  Alert,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -15,6 +16,7 @@ import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithCredential,
+  sendPasswordResetEmail, // Importa el método para restablecer contraseña
 } from "firebase/auth";
 import { useGoogleAuth } from "../firebase/GoogleConfig"; // Importa el hook de Google
 
@@ -52,6 +54,42 @@ export default function Login({ navigation }) {
       setError("Error en la autenticación con Google. Intenta nuevamente.");
     }
   }, [response]);
+
+  const handleForgotPassword = async () => {
+    if (!username) {
+      Alert.alert("Error", "Por favor ingresa tu nombre de usuario.");
+      return;
+    }
+
+    try {
+      // Buscar el usuario en la colección "users" por nombre de usuario
+      const usersRef = collection(db, "users");
+      const q = query(usersRef, where("username", "==", username));
+      const querySnapshot = await getDocs(q);
+
+      if (querySnapshot.empty) {
+        Alert.alert("Error", "Usuario no encontrado.");
+        return;
+      }
+
+      // Obtener el correo del usuario
+      const userDoc = querySnapshot.docs[0];
+      const userEmail = userDoc.data().email;
+
+      // Enviar correo de restablecimiento de contraseña
+      await sendPasswordResetEmail(auth, userEmail);
+      Alert.alert(
+        "Éxito",
+        "Se ha enviado un correo para restablecer tu contraseña."
+      );
+    } catch (error) {
+      console.error("Error al enviar el correo de restablecimiento:", error);
+      Alert.alert(
+        "Error",
+        "No se pudo enviar el correo de restablecimiento. Intenta nuevamente."
+      );
+    }
+  };
 
   const handleLogin = async () => {
     setError("");
@@ -125,7 +163,7 @@ export default function Login({ navigation }) {
                 />
               </ShakeView>
 
-              <TouchableOpacity>
+              <TouchableOpacity onPress={handleForgotPassword}>
                 <Text style={styles.linkLabel}>¿Contraseña olvidada?</Text>
               </TouchableOpacity>
 
