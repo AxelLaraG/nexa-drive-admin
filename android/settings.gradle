@@ -35,5 +35,7 @@ rootProject.name = 'rentacar-admin'
 
 expoAutolinking.useExpoVersionCatalog()
 
-include ':app'
+include ':app', ':unity_module:UnityLibrary', ':unity_module:launcher' // Ajusta las rutas si tu estructura de carpetas es diferente
+project(':unity_module:UnityLibrary').projectDir = new File('unity/UnityLibrary')
+project(':unity_module:launcher').projectDir = new File('unity/launcher')
 includeBuild(expoAutolinking.reactNativeGradlePlugin)
