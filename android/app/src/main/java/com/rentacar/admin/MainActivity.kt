@@ -1,6 +1,7 @@
 package com.rentacar.admin
 
 import android.os.Build
+import android.content.Intent
 import android.os.Bundle
 
 import com.facebook.react.ReactActivity
@@ -17,6 +18,11 @@ class MainActivity : ReactActivity() {
     // This is required for expo-splash-screen.
     setTheme(R.style.AppTheme);
     super.onCreate(null)
+  }
+
+  fun launchUnity() {
+        val intent = Intent(this, com.unity3d.player.UnityPlayerActivity::class.java)
+        startActivity(intent)
   }
 
   /**
