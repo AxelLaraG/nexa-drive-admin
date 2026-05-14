@@ -7,8 +7,8 @@ WebBrowser.maybeCompleteAuthSession();
 
 export const useGoogleAuth = () => {
   const [request, response, promptAsync] = Google.useAuthRequest({
-    webClientId: "511325417475-ukqicv72d0gttq8tebf68hvgjjngb66s.apps.googleusercontent.com",
-    androidClientId: "511325417475-u4s192994uc9rp6efbrm68hthu2lt522.apps.googleusercontent.com",
+    webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
+    androidClientId: process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID,
   });
 
   return { request, response, promptAsync };
